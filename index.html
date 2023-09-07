@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Watch</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Poppins:wght@400;700&display=swap');
+
+        body {
+            background: #edeaff;
+            font-family: 'Josefin Sans', sans-serif;
+
+
+        }
+
+        .stopwatch {
+            width: 90%;
+            max-width: 600px;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(background.png);
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+            margin: 200px auto 0;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+
+
+        }
+        .stopwatch p{
+            font-size: 28px;
+        }
+
+        .stopwatch h1 {
+            margin-top: 60px;
+            font-size: 64px;
+            font-weight: 300;
+
+        }
+
+        .buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .buttons img {
+            width: 50px;
+            margin: 0 20px;
+            cursor: pointer;
+        }
+
+        .buttons img:nth-child(2) {
+            width: 80px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stopwatch">
+        <p>Stop Watch</p>
+        <h1 id="displayTime">00:00:00:00</h1>
+        <div class="buttons">
+            <img src="stop.png" onclick="watchStop()">
+            <img src="start.png" onclick="watchStart()">
+            <img src="reset.png" onclick="watchReset()">
+        </div>
+    </div>
+
+    <script>
+
+        let [seconds, minutes, hours, microsecond] = [0, 0, 0, 0];
+        let displayTime = document.getElementById("displayTime");
+        let timer = null;
+
+        function stopwatch() {
+            microsecond++;
+            if (microsecond == 100) {
+                seconds++;
+                microsecond=0;
+                if (seconds == 60) {
+                    seconds = 0;
+                    minutes++;
+                    if (minutes == 60) {
+                        minutes = 0;
+                        hours++;
+                    }
+                }
+            }
+
+            let h = hours < 10 ? "0" + hours : hours;
+            let m = minutes < 10 ? "0" + minutes : minutes;
+            let s = seconds < 10 ? "0" + seconds : seconds;
+            let ms= microsecond < 10 ? "0" + microsecond : microsecond;
+
+            displayTime.innerHTML = h + ":" + m + ":" + s+":"+ms;
+        }
+
+        function watchStart() {
+            if (timer !== null) {
+                clearInterval(timer);
+            }
+            timer = setInterval(stopwatch, 10);
+        }
+
+        function watchStop() {
+            clearInterval(timer);
+        }
+        function watchReset() {
+            clearInterval(timer);
+            [seconds, minutes, hours, microsecond] = [0, 0, 0,0];
+            displayTime.innerHTML = "00:00:00:00";
+        }
+
+    </script>
+</body>
+
+</html>
